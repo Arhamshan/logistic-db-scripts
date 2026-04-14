@@ -84,3 +84,10 @@ CREATE TABLE "Events"(
     CONSTRAINT fk_item FOREIGN KEY (cons_item_id) REFERENCES "Items"(id)
 );
 --rollback drop table "Events";
+
+-- changeset Rizquan:add_dimensions:2026_04_14
+ALTER TABLE "Consignments"
+    ADD COLUMN height NUMERIC(10,2),
+    ADD COLUMN width NUMERIC(10,2),
+    ADD COLUMN length NUMERIC(10,2),
+    ADD COLUMN weight NUMERIC(10,2);
