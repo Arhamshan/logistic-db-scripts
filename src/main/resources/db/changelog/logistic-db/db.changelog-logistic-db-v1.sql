@@ -85,9 +85,9 @@ CREATE TABLE "Events"(
 );
 --rollback drop table "Events";
 
--- changeset Rizquan:add_dimensions:2026_04_14
-ALTER TABLE "Consignments"
-    ADD COLUMN height NUMERIC(10,2),
-    ADD COLUMN width NUMERIC(10,2),
-    ADD COLUMN length NUMERIC(10,2),
-    ADD COLUMN weight NUMERIC(10,2);
+-- changeset Rizquan:2026_04_15_10_15_15
+ALTER TABLE "Items"
+    ADD COLUMN IF NOT EXISTS height NUMERIC(10,2),
+    ADD COLUMN IF NOT EXISTS width NUMERIC(10,2),
+    ADD COLUMN IF NOT EXISTS length NUMERIC(10,2),
+    ADD COLUMN IF NOT EXISTS weight NUMERIC(10,2);
