@@ -105,3 +105,9 @@ CREATE TABLE "Users"(
     updated_by VARCHAR(50)
 );
 --rollback drop table "Users";
+
+-- changeset Arham_Muhammadh:2026_04_26_21_30_30
+ALTER TABLE "Contacts"
+DROP COLUMN address,
+ADD COLUMN IF NOT EXISTS address_line1 VARCHAR(150),
+ADD COLUMN IF NOT EXISTS address_line2 VARCHAR(150);
