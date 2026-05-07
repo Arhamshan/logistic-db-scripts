@@ -111,3 +111,15 @@ ALTER TABLE "Contacts"
 DROP COLUMN address,
 ADD COLUMN IF NOT EXISTS address_line1 VARCHAR(150),
 ADD COLUMN IF NOT EXISTS address_line2 VARCHAR(150);
+
+
+-- changeset Rizquan:2026_05_07_12_52_00
+ALTER TABLE "Consignments"
+ALTER COLUMN status TYPE VARCHAR(40);
+
+ALTER TABLE "Items"
+ALTER COLUMN status TYPE VARCHAR(40);
+
+-- changeset Rizquan:2026_05_07_17_27_00
+ALTER TABLE "Events"
+ALTER COLUMN event_type TYPE VARCHAR(40);
