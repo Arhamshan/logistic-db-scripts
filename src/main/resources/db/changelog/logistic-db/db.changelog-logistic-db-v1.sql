@@ -126,6 +126,5 @@ ALTER TABLE "Events"
 ALTER COLUMN event_type TYPE VARCHAR(40);
 
 -- changeset Rizquan:2026_05_08_15_10_00
-
 ALTER TABLE "Consignments"
 ADD CONSTRAINT uq_consignment_id UNIQUE (consignment_id);
