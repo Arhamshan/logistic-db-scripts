@@ -129,7 +129,7 @@ ALTER COLUMN event_type TYPE VARCHAR(40);
 ALTER TABLE "Consignments"
 ADD CONSTRAINT uq_consignment_id UNIQUE (consignment_id);
 
--- changeset Rizquan:2026_05_24_17_25_01
+-- changeset Rizquan:2026_05_23_14_25_01
 CREATE TABLE "Pods" (
      id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
      cons_item_id BIGINT NOT NULL REFERENCES "Items"(id),
