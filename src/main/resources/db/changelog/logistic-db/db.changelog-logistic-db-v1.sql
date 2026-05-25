@@ -128,3 +128,20 @@ ALTER COLUMN event_type TYPE VARCHAR(40);
 -- changeset Rizquan:2026_05_08_15_10_00
 ALTER TABLE "Consignments"
 ADD CONSTRAINT uq_consignment_id UNIQUE (consignment_id);
+
+-- changeset Rizquan:2026_05_23_14_25_01
+CREATE TABLE "Pods" (
+     id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     cons_item_id BIGINT NOT NULL REFERENCES "Items"(id),
+     received_by VARCHAR(100),
+     receiver_contact VARCHAR(50),
+     remarks TEXT,
+     pod_path TEXT,
+     delivered_at TIMESTAMPTZ,
+     delivered_by VARCHAR(100),
+     created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+     created_by VARCHAR(50),
+     updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+     updated_by VARCHAR(50)
+);
+--rollback DROP TABLE "Pods";
