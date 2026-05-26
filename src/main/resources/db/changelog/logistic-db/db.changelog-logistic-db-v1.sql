@@ -129,7 +129,7 @@ ALTER COLUMN event_type TYPE VARCHAR(40);
 ALTER TABLE "Consignments"
 ADD CONSTRAINT uq_consignment_id UNIQUE (consignment_id);
 
--- changeset Rizquan:2026_05_23_14_25_01
+-- changeset Rizquan:2026_05_23_15_30_31
 CREATE TABLE "Pods" (
      id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
      cons_item_id BIGINT NOT NULL REFERENCES "Items"(id),
@@ -145,3 +145,7 @@ CREATE TABLE "Pods" (
      updated_by VARCHAR(50)
 );
 --rollback DROP TABLE "Pods";
+
+-- changeset Rizquan:2026_05_26_16_10_03
+ALTER TABLE "Items" ADD COLUMN barcode_number VARCHAR(20) UNIQUE;
+--rollback ALTER TABLE "Items" DROP COLUMN barcode_number;
