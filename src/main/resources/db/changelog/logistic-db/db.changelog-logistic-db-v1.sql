@@ -149,3 +149,21 @@ CREATE TABLE "Pods" (
 -- changeset Rizquan:2026_05_26_16_10_03
 ALTER TABLE "Items" ADD COLUMN barcode_number VARCHAR(20) UNIQUE;
 --rollback ALTER TABLE "Items" DROP COLUMN barcode_number;
+
+-- changeset Rizquan:2026_06_08_16_50_01
+ALTER TABLE "Items"
+DROP CONSTRAINT fk_consignment,
+ADD CONSTRAINT fk_consignment
+    FOREIGN KEY (cons_id)
+    REFERENCES "Consignments"(id)
+    ON DELETE CASCADE;
+--rollback ALTER TABLE "Items" DROP CONSTRAINT fk_consignment, ADD CONSTRAINT fk_consignment FOREIGN KEY (cons_id) REFERENCES "Consignments"(id);
+
+-- changeset Rizquan:2026_06_08_17_07_30
+ALTER TABLE "Events"
+DROP CONSTRAINT fk_item,
+ADD CONSTRAINT fk_item
+    FOREIGN KEY (cons_item_id)
+    REFERENCES "Items"(id)
+    ON DELETE CASCADE;
+--rollback ALTER TABLE "Events" DROP CONSTRAINT fk_item, ADD CONSTRAINT fk_item FOREIGN KEY (cons_item_id) REFERENCES "Items"(id);
