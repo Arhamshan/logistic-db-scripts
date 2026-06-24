@@ -167,3 +167,22 @@ ADD CONSTRAINT fk_item
     REFERENCES "Items"(id)
     ON DELETE CASCADE;
 --rollback ALTER TABLE "Events" DROP CONSTRAINT fk_item, ADD CONSTRAINT fk_item FOREIGN KEY (cons_item_id) REFERENCES "Items"(id);
+
+-- changeset Rizquan:2026_06_23_16_00_00
+CREATE TABLE "Notifications" (
+   id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   cons_id BIGINT NOT NULL,
+   event_code VARCHAR(50),
+   recipient_email VARCHAR(100),
+   recipient_phone VARCHAR(30),
+   subject VARCHAR(255),
+   message TEXT,
+   status VARCHAR(20),
+   sent_date TIMESTAMPTZ,
+   created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   created_by VARCHAR(50),
+   updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   updated_by VARCHAR(50),
+   CONSTRAINT fk_notification_consignment FOREIGN KEY (cons_id) REFERENCES "Consignments"(id) ON DELETE CASCADE
+);
+--rollback DROP TABLE "Notifications";
