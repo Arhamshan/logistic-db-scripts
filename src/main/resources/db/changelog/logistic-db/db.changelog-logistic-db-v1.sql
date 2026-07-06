@@ -186,3 +186,20 @@ CREATE TABLE "Notifications" (
    CONSTRAINT fk_notification_consignment FOREIGN KEY (cons_id) REFERENCES "Consignments"(id) ON DELETE CASCADE
 );
 --rollback DROP TABLE "Notifications";
+
+-- changeset Rizquan:2026_07_06_15_00_00
+CREATE TABLE "DeliveryAssignments" (
+   id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   item_id BIGINT NOT NULL,
+   driver_user_id BIGINT NOT NULL,
+   assigned_by VARCHAR(50) NOT NULL,
+   assigned_datetime TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   status VARCHAR(30) NOT NULL,
+   remarks TEXT,
+   created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   CONSTRAINT fk_delivery_assignment_item FOREIGN KEY (item_id) REFERENCES "Items"(id) ON DELETE CASCADE,
+   CONSTRAINT fk_delivery_assignment_driver FOREIGN KEY (driver_user_id) REFERENCES "Users"(id) ON DELETE CASCADE,
+   CONSTRAINT uk_delivery_assignment_item_active UNIQUE (item_id, status)
+);
+--rollback DROP TABLE "DeliveryAssignments";
