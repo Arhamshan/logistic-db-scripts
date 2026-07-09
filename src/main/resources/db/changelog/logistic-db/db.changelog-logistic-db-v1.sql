@@ -203,3 +203,12 @@ CREATE TABLE "DeliveryAssignments" (
    CONSTRAINT uk_delivery_assignment_item_active UNIQUE (cons_item_id, status)
 );
 --rollback DROP TABLE "DeliveryAssignments";
+
+-- changeset Rizquan:2026_07_09_10_00_00
+ALTER TABLE "Users"
+    ADD COLUMN IF NOT EXISTS contact_id BIGINT,
+    ADD CONSTRAINT fk_user_contact
+    FOREIGN KEY (contact_id)
+    REFERENCES "Contacts"(id)
+    ON DELETE SET NULL;
+--rollback ALTER TABLE "Users" DROP CONSTRAINT fk_user_contact, DROP COLUMN contact_id;
