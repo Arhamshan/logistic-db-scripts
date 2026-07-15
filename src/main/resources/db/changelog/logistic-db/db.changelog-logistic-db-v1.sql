@@ -128,3 +128,87 @@ ALTER COLUMN event_type TYPE VARCHAR(40);
 -- changeset Rizquan:2026_05_08_15_10_00
 ALTER TABLE "Consignments"
 ADD CONSTRAINT uq_consignment_id UNIQUE (consignment_id);
+
+-- changeset Rizquan:2026_05_23_15_30_31
+CREATE TABLE "Pods" (
+     id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+     cons_item_id BIGINT NOT NULL REFERENCES "Items"(id),
+     received_by VARCHAR(100),
+     receiver_contact VARCHAR(50),
+     remarks TEXT,
+     pod_path TEXT,
+     delivered_at TIMESTAMPTZ,
+     delivered_by VARCHAR(100),
+     created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+     created_by VARCHAR(50),
+     updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+     updated_by VARCHAR(50)
+);
+--rollback DROP TABLE "Pods";
+
+-- changeset Rizquan:2026_05_26_16_10_03
+ALTER TABLE "Items" ADD COLUMN barcode_number VARCHAR(20) UNIQUE;
+--rollback ALTER TABLE "Items" DROP COLUMN barcode_number;
+
+-- changeset Rizquan:2026_06_08_16_50_01
+ALTER TABLE "Items"
+DROP CONSTRAINT fk_consignment,
+ADD CONSTRAINT fk_consignment
+    FOREIGN KEY (cons_id)
+    REFERENCES "Consignments"(id)
+    ON DELETE CASCADE;
+--rollback ALTER TABLE "Items" DROP CONSTRAINT fk_consignment, ADD CONSTRAINT fk_consignment FOREIGN KEY (cons_id) REFERENCES "Consignments"(id);
+
+-- changeset Rizquan:2026_06_08_17_07_30
+ALTER TABLE "Events"
+DROP CONSTRAINT fk_item,
+ADD CONSTRAINT fk_item
+    FOREIGN KEY (cons_item_id)
+    REFERENCES "Items"(id)
+    ON DELETE CASCADE;
+--rollback ALTER TABLE "Events" DROP CONSTRAINT fk_item, ADD CONSTRAINT fk_item FOREIGN KEY (cons_item_id) REFERENCES "Items"(id);
+
+-- changeset Rizquan:2026_06_23_16_00_00
+CREATE TABLE "Notifications" (
+   id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   cons_id BIGINT NOT NULL,
+   event_code VARCHAR(50),
+   recipient_email VARCHAR(100),
+   recipient_phone VARCHAR(30),
+   subject VARCHAR(255),
+   message TEXT,
+   status VARCHAR(20),
+   sent_date TIMESTAMPTZ,
+   created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   created_by VARCHAR(50),
+   updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   updated_by VARCHAR(50),
+   CONSTRAINT fk_notification_consignment FOREIGN KEY (cons_id) REFERENCES "Consignments"(id) ON DELETE CASCADE
+);
+--rollback DROP TABLE "Notifications";
+
+-- changeset Rizquan:2026_07_06_15_00_10
+CREATE TABLE "DeliveryAssignments" (
+   id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   cons_item_id BIGINT NOT NULL,
+   driver_user_id BIGINT NOT NULL,
+   assigned_by VARCHAR(50) NOT NULL,
+   assigned_datetime TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   status VARCHAR(30) NOT NULL,
+   remarks TEXT,
+   created_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   updated_date TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+   CONSTRAINT fk_delivery_assignment_item FOREIGN KEY (cons_item_id) REFERENCES "Items"(id) ON DELETE CASCADE,
+   CONSTRAINT fk_delivery_assignment_driver FOREIGN KEY (driver_user_id) REFERENCES "Users"(id) ON DELETE CASCADE,
+   CONSTRAINT uk_delivery_assignment_item_active UNIQUE (cons_item_id, status)
+);
+--rollback DROP TABLE "DeliveryAssignments";
+
+-- changeset Rizquan:2026_07_09_10_00_00
+ALTER TABLE "Users"
+    ADD COLUMN IF NOT EXISTS contact_id BIGINT,
+    ADD CONSTRAINT fk_user_contact
+    FOREIGN KEY (contact_id)
+    REFERENCES "Contacts"(id)
+    ON DELETE SET NULL;
+--rollback ALTER TABLE "Users" DROP CONSTRAINT fk_user_contact, DROP COLUMN contact_id;
